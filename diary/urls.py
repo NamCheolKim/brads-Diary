@@ -5,6 +5,7 @@ app_name = "diary"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("album/", views.unfold, name="album"),
-    path("detail/", views.detail, name="detail"),
+    path("album/", views.AlbumPostView.as_view(), name="album"),
+    path("detail/<int:pk>/", views.AlbumPostDetailView.as_view(), name="detail"),
+    path("create/", views.AlbumPostCreateView.as_view(), name="create"),
 ]

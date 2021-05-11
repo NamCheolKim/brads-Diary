@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1>Album example</h1>
+      <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+    </div>
+  </section>
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="my-3 text-right">
+        <a href="{% url 'diary:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
+      </div>
+      
+      <div class="row">
+      {% for album in postdiary_list %}        
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+          {% if album.image %}
+            <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{ album.image.url }}" alt="{{ album }} image">
+          {% else %}
+            <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="../../static/img/default-no-img.jpg" alt="no image">
+          {% endif %}
+            <div class="card-body">
+              <p class="card-text">{{ album.title }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{% url 'diary:detail' album.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                </div>
+                <small class="text-muted">{{ album.created_at }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+        
+    </div>
+  </div>
+</main>
+
+<footer class="text-muted">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+  </div>
+</footer> 
+{% endblock %}

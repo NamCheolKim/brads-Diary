@@ -55,6 +55,12 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
+THIRD_PARTY_APPS = ["django_summernote"]
+
+PROJECT_APPS = [
+    "diary.apps.DiaryConfig",
+]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -65,11 +71,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-PROJECT_APPS = [
-    "diary.apps.DiaryConfig",
-]
 
-INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 ROOT_URLCONF = "config.urls"
 
@@ -136,7 +139,21 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+MEDIA_URL = "/media/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Django summmernote
+SUMMERNOTE_CONFIG = {
+    "summernote": {
+        "width": "100%",
+        "height": "480 ",
+        "attachment_filesize_limit": 5 * 1024 * 1024,
+    }
+}
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SUMMERNOTE_THEME = "bs4"
