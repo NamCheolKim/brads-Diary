@@ -1,0 +1,54 @@
+{% extends "base.html" %} 
+{% block content %}
+<!-- Page content-->
+<div class="container">
+  <div>
+    <!-- Post content-->
+    <div>
+      <!-- Title-->
+      <h1 class="mt-4">{{ postdiary.title }}</h1>
+      <hr />
+      <!-- Date and time-->
+      <p>{{ postdiary.created_at }}</p>
+      <hr />
+      <!-- Preview image-->
+      {% if photo.file %}
+        <img class="img-fluid rounded" src="{{ photo.file.url }}" alt="" />
+      {% endif %}
+      <hr />
+      <!-- Post content-->
+      <p class="lead">{{ postdiary.content | safe }}</p>
+      <hr />
+      <!-- Comments form-->
+      <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <textarea class="form-control" rows="3"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+      <!-- Single comment-->
+      {% for comment in postdiary.comments.all %}
+      <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50x50" alt="..." />
+        <div class="media-body">
+          <h5 class="mt-0">{{ comment.user }}</h5>
+          {{ comment.comment }}
+        </div>
+      </div>
+      {% endfor %}
+        
+    </div>
+  </div>
+</div>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p>
+  </div>
+</footer>
+{% endblock %}

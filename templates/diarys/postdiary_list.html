@@ -10,7 +10,11 @@
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="my-3 text-right">
-        <a href="{% url 'diary:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
+        {% if author.is_authenticated %}
+          {% if author.is_superuser or author.is_staff %}
+          <a href="{% url 'diarys:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
+          {% endif %}  
+        {% endif %}       
       </div>
       
       <div class="row">
@@ -18,7 +22,7 @@
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
           {% if album.image %}
-            <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{ album.image.url }}" alt="{{ album }} image">
+            <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{ album.file }}" alt="">
           {% else %}
             <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="../../static/img/default-no-img.jpg" alt="no image">
           {% endif %}
@@ -26,7 +30,7 @@
               <p class="card-text">{{ album.title }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="{% url 'diary:detail' album.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+                  <a href="{% url 'diarys:detail' album.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
                   <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                 </div>
                 <small class="text-muted">{{ album.created_at }}</small>
@@ -36,7 +40,6 @@
         </div>
       {% endfor %}
       </div>
-        
     </div>
   </div>
 </main>

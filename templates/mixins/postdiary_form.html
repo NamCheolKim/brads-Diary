@@ -1,17 +1,7 @@
-<h1>Create New Album</h1>
-<form method="POST" class="w-full" enctype="multipart/form-data">
-    {% csrf_token %}
+<div class="container">
+    <form method="POST" class="w-full" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-primary float-right"><i class="fas fa-save"></i> 등록</button>
+        <h1 class="my-3 border-bottom pb-2">Create New Album</h1>
+    </form> 
+</div>
 
-    {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-            <span class="text-red-700 font-medium text-sm">{{error}}</span> 
-        {% endfor %}
-    {% endif %}
-
-    {% for field in form %}
-        {% include 'mixins/postdiary_input.html' with field=field %}
-    {% endfor %}
-
-    <button class="btn bg-red-500 text-white">{{cta}}</button>
-</form> 
-    
