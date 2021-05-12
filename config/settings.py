@@ -58,7 +58,10 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = ["django_summernote"]
 
 PROJECT_APPS = [
-    "diary.apps.DiaryConfig",
+    "core.apps.CoreConfig",
+    "diarys.apps.DiarysConfig",
+    "users.apps.UsersConfig",
+    "comments.apps.CommentsConfig",
 ]
 
 MIDDLEWARE = [
@@ -151,9 +154,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SUMMERNOTE_CONFIG = {
     "summernote": {
         "width": "100%",
-        "height": "480 ",
+        "height": "400 ",
         "attachment_filesize_limit": 5 * 1024 * 1024,
     }
 }
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SUMMERNOTE_THEME = "bs4"
+
+AUTH_USER_MODEL = "users.User"
