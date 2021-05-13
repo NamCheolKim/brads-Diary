@@ -4,8 +4,7 @@ from . import views
 app_name = "diarys"
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("album/", views.AlbumPostView.as_view(), name="album"),
-    path("detail/<int:pk>/", views.AlbumPostDetailView.as_view(), name="detail"),
-    path("create/", views.AlbumPostCreateView.as_view(), name="create"),
+    path("diary-list/", views.AlbumPostView.as_view(), name="list"),
+    path("diary-detail/<int:pk>/", views.AlbumPostDetailView.as_view(), name="detail"),
+    path("diary-create/", views.AlbumPostCreateView.as_view(), name="create"),
 ]
