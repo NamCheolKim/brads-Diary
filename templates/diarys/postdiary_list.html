@@ -10,31 +10,32 @@
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="my-3 text-right">
-        {% if author.is_authenticated %}
-          {% if author.is_superuser or author.is_staff %}
-          <a href="{% url 'diarys:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
-          {% endif %}  
-        {% endif %}       
+        <a href="{% url 'diarys:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>     
       </div>
       
       <div class="row">
-      {% for album in postdiary_list %}        
+      {% for list in postdiary_list %}        
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
-          {% if album.image %}
-            <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{ album.file }}" alt="">
+          {% if list.head_photo %}
+            <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="{{ list.head_photo }}" alt="">
           {% else %}
             <img  class="bd-placeholder-img card-img-top" width="100%" height="225"src="../../static/img/default-no-img.jpg" alt="no image">
           {% endif %}
             <div class="card-body">
-              <p class="card-text">{{ album.title }}</p>
+              <p class="card-text">{{ list.title }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="{% url 'diarys:detail' album.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+                  <a href="{% url 'diarys:detail' list.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
                   <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                 </div>
-                <small class="text-muted">{{ album.created_at }}</small>
+                {% if list.updated_at %}
+                <small class="text-muted">{{ list.updated_at }}에 수정됨</small>
+                {% else %}
+                <small class="text-muted">{{ list.created_at }}</small>
+                {% endif %}
               </div>
+                <small class="text-muted float-right">{{ list.author }}</small>
             </div>
           </div>
         </div>
@@ -43,7 +44,44 @@
     </div>
   </div>
 </main>
+<!-- 페이징 -->
+<ul class="pagination justify-content-center">
+  <!-- 이전 페이지 -->
+  {% if postdiary_list.has_previous %}
+  <li class="page-item">
+    <a class="page-link" style="color:black; border-color:gray;" href="?page={{ postdiary_list.previous_page_number }}">이전</a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" style="border-color:gray;" tabindex="-1" aria-disabled="true" href="#">이전</a>
+  </li>
+  {% endif %}
 
+  <!-- 페이지 리스트 -->
+  {% for page_number in postdiary_list.paginator.page_range %}
+    {% if page_number == postdiary_list.number %}
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" style="background-color:gray; border-color:gray;" href="?page={{ page_number }}">{{ page_number }}</a>
+      </li>
+    {% else %}
+    <li class="page-item">
+      <a class="page-link" style="color:black; border-color:gray;" href="?page={{ page_number }}"> {{ page_number }} </a>
+    </li>
+    {% endif %}
+  {% endfor %}
+  
+  <!-- 다음 페이지 -->
+  {% if postdiary_list.has_next %}
+    <li class="page-item">
+      <a class="page-link" style="color:black; border-color:gray;" href="?page={{ postdiary_list.next_page_number }}">다음</a>
+    </li>
+  {% else %}
+  <li class="page-item disabled">
+      <a class="page-link" style="border-color:gray;" tabindex="-1" aria-disabled="true" href="#">다음</a>
+    </li>
+  {% endif %}
+</ul>
+<!-- 페이징 -->
 <footer class="text-muted">
   <div class="container">
     <p class="float-right">

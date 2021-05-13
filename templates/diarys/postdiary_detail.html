@@ -9,11 +9,16 @@
       <h1 class="mt-4">{{ postdiary.title }}</h1>
       <hr />
       <!-- Date and time-->
-      <p>{{ postdiary.created_at }}</p>
+      <span>{{postdiary.author}}</span> | 
+      {% if postdiary.updated_at %}
+      <small>{{ postdiary.updated_at }}에 수정됨</small>
+      {% else %}
+      <small>{{ postdiary.created_at }}</small>
+      {% endif %}
       <hr />
       <!-- Preview image-->
-      {% if photo.file %}
-        <img class="img-fluid rounded" src="{{ photo.file.url }}" alt="" />
+      {% if postdiary.head_photo %}
+        <img class="img-fluid rounded" src="{{ postdiary.head_photo }}" width="400" height="400" alt="" />
       {% endif %}
       <hr />
       <!-- Post content-->
@@ -36,7 +41,14 @@
       <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50x50" alt="..." />
         <div class="media-body">
-          <h5 class="mt-0">{{ comment.user }}</h5>
+          <span class="mt-0">{{ comment.user }}
+            <small class="text-muted"> | </small>
+          {% if comment.updated_at %}
+            <small class="text-muted">{{comment.updated_at}} 수정됨</small>
+          {% else %}
+            <small class="text-muted">{{comment.created_at}}</small>
+          {% endif %}
+          </span><br />
           {{ comment.comment }}
         </div>
       </div>

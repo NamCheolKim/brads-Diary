@@ -1,7 +1,7 @@
 from django.views.generic import ListView, DetailView, FormView
 from django.shortcuts import render, redirect, reverse
+from django.core.paginator import Paginator
 from django.contrib import messages
-from django.utils import timezone
 from . import models, forms
 
 
@@ -14,8 +14,24 @@ def index(request):
 class AlbumPostView(ListView):
     """AlbumView Definition"""
 
-    model = models.PostDiary
-    ordering = "-created_at"
+    def get(self, request):
+
+        # 페이지
+        page = request.GET.get("page", 1)
+
+        # 조회
+        postdiary_list = models.PostDiary.objects.order_by("-created_at")
+
+        # 페이징
+        paginator = Paginator(postdiary_list, 12)
+        page_obj = paginator.get_page(page)
+
+        context = {"postdiary_list": page_obj}
+
+        return render(request, "diarys/postdiary_list.html", context)
+
+    # model = models.PostDiary
+    # ordering = "-created_at"
 
 
 # 상세 페이지
@@ -36,7 +52,6 @@ class AlbumPostCreateView(FormView):
 
     def form_valid(self, form):
         diary = form.save()
-        diary.created_at = timezone.now()
         diary.save()
         form.save_m2m()
         messages.success(self.request, "diary Uploaded")

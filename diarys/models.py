@@ -17,6 +17,13 @@ class PostDiary(core_models.TimeStampModel):
     def __str__(self):
         return self.title
 
+    def head_photo(self):
+        try:
+            (photo,) = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            return None
+
 
 # 이미지 첨부
 class Photo(core_models.TimeStampModel):
@@ -24,8 +31,10 @@ class Photo(core_models.TimeStampModel):
     """Photo Model Definition"""
 
     caption = models.CharField(max_length=80)
-    file = models.ImageField(upload_to="upload/%Y/%m/%d/", blank=True)
-    post = models.ForeignKey(PostDiary, related_name="photos", on_delete=models.CASCADE)
+    file = models.ImageField(upload_to="upload-img/%Y/%m/%d/", blank=True)
+    postdiary = models.ForeignKey(
+        PostDiary, related_name="photos", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.caption
