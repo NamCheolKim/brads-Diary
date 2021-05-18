@@ -10,7 +10,12 @@
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="my-3 text-right">
-        <a href="{% url 'diarys:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>     
+        {% if user.is_authenticated %}
+        <a href="{% url 'diarys:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
+        {% else %}
+        <a href="{% url 'core:login' %}" class="btn btn-info">기록하기는 로그인 후에 가능합니다.</a>
+        {% endif %}
+            
       </div>
       
       <div class="row">

@@ -7,8 +7,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
+        <span class="nav-link">{{ user.nickname }}</span>
         <li class="nav-item active">
-          <a class="nav-link" href="{% url 'users:signin' %}"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+          {% if user.is_authenticated %}
+          <a class="nav-link" href="{% url 'core:logout' %}">로그아웃 <i class="fas fa-sign-out-alt"></i></a>
+          {% else %}
+          <a class="nav-link" href="{% url 'core:login' %}"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+          {% endif %}  
         </li>
       </ul>
     </div>

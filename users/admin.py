@@ -12,7 +12,7 @@ class CustomUserAdmin(UserAdmin):
         (
             "Custom Profile",
             {
-                "fields": ("avatar",),
+                "fields": ("avatar", "nickname"),
             },
         ),
     )

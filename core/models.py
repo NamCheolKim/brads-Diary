@@ -10,3 +10,8 @@ class TimeStampModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class PostIndexModel(models.Model):
+
+    title = models.CharField(max_length=100)

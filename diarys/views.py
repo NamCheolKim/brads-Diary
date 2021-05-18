@@ -5,11 +5,6 @@ from django.contrib import messages
 from . import models, forms
 
 
-# 대문 페이지
-def index(request):
-    return render(request, "diarys/index.html")
-
-
 # 게시물 리스트
 class AlbumPostView(ListView):
     """AlbumView Definition"""
