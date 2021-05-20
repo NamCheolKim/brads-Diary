@@ -14,24 +14,28 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/signin.css' %}" rel="stylesheet" />
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" />
   </head>
   <body class="text-center">
-    <form class="form-signin" method="POST" action="{% url 'core:login' %}">
+    <form class="form-signin" method="POST" action="{% url 'users:login' %}">
       {% csrf_token %}
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <!-- <span class="form-control">{{ form.as_p }}</span> -->
-      <label for="email" class="sr-only">Email address</label>
+      {{ form.as_p }}
+      <!-- <label for="email" class="sr-only">Email address</label>
       <input type="email" id="email" name="email" class="form-control" value="{{ form.email.value | default_if_none:'' }}" placeholder="Email address" required autofocus />
       <label for="password" class="sr-only">Password</label>
       <input type="password" id="password" name="password" class="form-control" value="{{ form.password.value | default_if_none:'' }}" placeholder="Password" required />
-      <div class="checkbox mb-3">
+      <div class="checkbox mb-3"> 
         <label>
           <input type="checkbox" value="remember-me" /> Remember me
         </label>
-      </div>
+      </div>-->
       <button class="btn btn-lg btn-primary btn-block" type="submit">
-        Sign in
+        로그인
       </button>
+      {% include 'social_login.html' %}
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2021</p>
     </form>
   </body>

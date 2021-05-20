@@ -8,6 +8,7 @@ django = "==3.2.2"
 django-summernote = "*"
 pillow = "*"
 django-seed = "*"
+requests = "*"
 
 [dev-packages]
 flake8 = "*"

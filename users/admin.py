@@ -12,7 +12,15 @@ class CustomUserAdmin(UserAdmin):
         (
             "Custom Profile",
             {
-                "fields": ("avatar", "nickname"),
+                "fields": ("avatar", "login_method"),
             },
         ),
+    )
+
+    list_display = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "login_method",
     )

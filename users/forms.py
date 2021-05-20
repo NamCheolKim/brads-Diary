@@ -1,5 +1,5 @@
 from django import forms
-from users import models as user_model
+from . import models as user_model
 
 
 class LoginForm(forms.Form):
