@@ -3,17 +3,17 @@
 <main role="main">
   <section class="jumbotron text-center">
     <div class="container">
-      <h1>Album example</h1>
-      <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+      <h1>마음껏 자랑하시개.</h1>
+      <p class="lead text-muted">나와 함께 하는 반려동물의 자랑타임. <br />어떤것이든 좋으니 애정뿜뿜하게 자랑하시라냥.</p>
     </div>
   </section>
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="my-3 text-right">
         {% if user.is_authenticated %}
-        <a href="{% url 'diarys:create' %}" class="btn btn-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
+        <a href="{% url 'diarys:create' %}" class="btn btn-outline-success"><i class="fas fa-pencil-alt"></i> 기록하기</a>
         {% else %}
-        <a href="{% url 'users:login' %}" class="btn btn-info">기록하기는 로그인 후에 가능합니다.</a>
+        <a href="{% url 'users:login' %}" class="btn btn-outline-success" onclick="return alert('기록하기는 로그인 후에 가능합니다.')"><i class="fas fa-pencil-alt"></i> 기록하기</a>
         {% endif %}
             
       </div>
@@ -31,8 +31,7 @@
               <p class="card-text">{{ list.title }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="{% url 'diarys:detail' list.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  <a href="{% url 'diarys:detail' list.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-book-reader"></i> 자세히</a>
                 </div>
                 {% if list.updated_at %}
                 <small class="text-muted">{{ list.updated_at }}에 수정됨</small>
@@ -40,7 +39,7 @@
                 <small class="text-muted">{{ list.created_at }}</small>
                 {% endif %}
               </div>
-                <small class="text-muted float-right">{{ list.author }}</small>
+                <small class="text-muted float-right">{{ list.author.first_name }}</small>
             </div>
           </div>
         </div>
@@ -86,13 +85,8 @@
     </li>
   {% endif %}
 </ul>
+  <p class="text-right">
+    <a href="#"><i class="fas fa-chevron-up"></i> 맨위로</a>
+  </p>
 <!-- 페이징 -->
-<footer class="text-muted">
-  <div class="container">
-    <p class="float-right">
-      <a href="#">Back to top</a>
-    </p>
-    <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-  </div>
-</footer> 
 {% endblock %}

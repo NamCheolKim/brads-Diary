@@ -17,4 +17,4 @@ class LoginForm(forms.Form):
             else:
                 self.add_error("password", forms.ValidationError("비밀번호가 틀립니다."))
         except user_model.User.DoesNotExist:
-            self.add_error("email", forms.ValidationError("존재하지 않는 사용자입니다."))
+            self.add_error("email", forms.ValidationError("이메일을 확인해 주세요."))

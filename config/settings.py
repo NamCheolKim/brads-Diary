@@ -152,11 +152,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Django summmernote
 SUMMERNOTE_CONFIG = {
-    "summernote": {
-        "width": "100%",
-        "height": "400 ",
-        "attachment_filesize_limit": 5 * 1024 * 1024,
-    }
+    "width": "100%",
+    "height": "400 ",
+    "attachment_filesize_limit": 5 * 1024 * 1024,
 }
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SUMMERNOTE_THEME = "bs4"
