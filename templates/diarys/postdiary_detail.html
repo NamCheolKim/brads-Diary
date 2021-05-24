@@ -23,8 +23,9 @@
       {% endif %}  
       <hr />
       <!-- Preview image-->
-      {% if postdiary.head_photo %}
-        <img class="img-fluid rounded" src="{{ postdiary.head_photo }}" width="400" height="400" alt="" />
+  
+      {% if postdiary.photo %}
+        <img class="img-fluid rounded" src="{{ postdiary.photo.url }}" width="400" height="400" alt="" />
       {% endif %}
       <hr />
       <!-- Post content-->

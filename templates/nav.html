@@ -7,6 +7,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
+        <a class="nav-link" href="#">게시판</a>
+        {% if user.is_superuser or user.is_staff %}
+        <a class="nav-link" href="#">설정</a>
+        {% endif %}  
         <span class="nav-link">{{ user.first_name }}</span>
         <li class="nav-item active">
           {% if user.is_authenticated %}

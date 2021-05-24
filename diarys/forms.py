@@ -7,10 +7,11 @@ from django_summernote.widgets import SummernoteWidget
 class DiaryForm(forms.ModelForm):
     class Meta:
         model = models.PostDiary
-        fields = ("title", "content")
+        fields = ("title", "content", "photo")
         labels = {
             "title": "제목",
             "content": "내용",
+            "photo": "썸네일",
         }
         widgets = {"content": SummernoteWidget()}
 
