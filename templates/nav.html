@@ -1,25 +1,43 @@
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'diarys:list' %}">Pet's Diary</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'core:index' %}">Pet's Diary</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <a class="nav-link" href="#">게시판</a>
-        {% if user.is_superuser or user.is_staff %}
-        <a class="nav-link" href="#">설정</a>
-        {% endif %}  
-        <span class="nav-link">{{ user.first_name }}</span>
+  
+    <div class="collapse navbar-collapse" id="navbarsExample04">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          {% if user.is_authenticated %}
-          <a class="nav-link" href="{% url 'users:logout' %}">로그아웃 <i class="fas fa-sign-out-alt"></i></a>
-          {% else %}
-          <a class="nav-link" href="{% url 'users:login' %}"><i class="fas fa-sign-in-alt"></i> 로그인</a>
-          {% endif %}  
+          <a class="nav-link" href="{% url 'diarys:list' %}">홈 <span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">게시판</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+
+      </ul>
+      <ul class="navbar-nav mr-5">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> {{ user.first_name }}</a>
+          <div class="dropdown-menu" aria-labelledby="dropdown04">
+            <a class="dropdown-item" href="#"><i class="fas fa-user-circle"></i> 프로필</a>
+            <a class="dropdown-item" href="{% url 'users:logout' %}"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+            {% if user.is_superuser or user.is_staff %}
+            <a class="dropdown-item" href="#"><i class="fas fa-cog"></i> 설정</a>
+            {% endif %}  
+          </div>
+        </li>
+        {% else %}
+        <li class="nav-item"> 
+            <a class="nav-link" href="{% url 'users:login' %}"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link" href="{% url 'users:signup' %}"><i class="fas fa-user-plus"></i> 회원가입</a>
+        </li>
+        {% endif %}  
       </ul>
     </div>
-  </div>
-</nav>
+  </nav>

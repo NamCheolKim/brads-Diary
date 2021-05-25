@@ -6,10 +6,10 @@ from django.shortcuts import redirect, reverse
 from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from . import models, forms
+from . import models, forms, mixins
 
 
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
@@ -19,15 +19,39 @@ class LoginView(FormView):
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
         user = authenticate(self.request, username=email, password=password)
+        messages.success(self.request, f"어서오시개 {user.first_name}")
         if user is not None:
             login(self.request, user)
         return super().form_valid(form)
 
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is not None:
+            return next_arg
+        else:
+            return reverse("diarys:list")
+
 
 def log_out(request):
-    messages.info(request, f"See you later")
+    messages.info(request, f"또 오시개")
     logout(request)
     return redirect(reverse("diarys:list"))
+
+
+class SignUpView(mixins.LoggedOutOnlyView, FormView):
+    template_name = "users/signup.html"
+    form_class = forms.SignUpForm
+    success_url = reverse_lazy("diarys:list")
+
+    def form_valid(self, form):
+        form.save()
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password")
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            login(self.request, user)
+        messages.success(self.request, f"환영한다냥 {user.first_name}")
+        return super().form_valid(form)
 
 
 def kakao_login(request):
@@ -84,7 +108,7 @@ def kakao_callback(request):
                 user.avatar.save(
                     f"{nickname}-avatar", ContentFile(photo_request.content)
                 )
-        messages.success(request, f"Welcome back {user.first_name}")
+        messages.success(request, f"어서오시개 {user.first_name}")
         login(request, user)
         return redirect(reverse("diarys:list"))
     except KakaoException as e:
@@ -150,7 +174,7 @@ def naver_callback(request):
                 user.avatar.save(
                     f"{nickname}-avatar", ContentFile(photo_request.content)
                 )
-        messages.success(request, f"Welcome back {user.first_name}")
+        messages.success(request, f"어서오시개 {user.first_name}")
         login(request, user)
         return redirect(reverse("diarys:list"))
     except NaverException as e:
