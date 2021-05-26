@@ -39,3 +39,22 @@ class PostDiary(core_models.TimeStampModel):
 
 #     def __str__(self):
 #         return self.caption
+
+
+class Comment(core_models.TimeStampModel):
+
+    """Comment Model Definition"""
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    author = models.ForeignKey(
+        "users.User", related_name="comments", on_delete=models.CASCADE
+    )
+    diary = models.ForeignKey(
+        PostDiary, related_name="comments", on_delete=models.CASCADE
+    )
+    content = models.TextField()
+
+    def __str__(self):
+        return self.content

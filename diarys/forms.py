@@ -18,3 +18,14 @@ class DiaryForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         diary = super().save(commit=False)
         return diary
+
+
+class CreateCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = ("content",)
+        labels = {"content": "댓글내용"}
+
+    def save(self):
+        comment = super().save(commit=False)
+        return comment

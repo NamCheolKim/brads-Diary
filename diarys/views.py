@@ -100,3 +100,26 @@ def diary_delete(request, pk):
 
     diary.delete()
     return redirect(reverse("diarys:list"))
+
+
+# 댓글 작성
+@login_required(login_url="core:login")
+def create_comment(request, pk):
+    diary = get_object_or_404(models.PostDiary, pk=pk)
+
+    if request.method == "POST":
+        form = forms.CreateCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save()
+            comment.author = request.user
+            comment.diary = diary
+            comment.save()
+
+            return redirect(
+                reverse("diarys:detail", kwargs={"pk": diary.pk}), comment.pk
+            )
+    else:
+        form = forms.CreateCommentForm()
+    context = {"form": form}
+
+    return render(request, "diarys/postdiary_detail.html", context)

@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block content %}
 <!-- Page content-->
 <div class="container">
@@ -26,22 +26,28 @@
       <!-- Preview image-->
   
       {% if postdiary.photo %}
-        <img class="img-fluid rounded" src="{{ postdiary.photo.url }}" width="400" height="400" alt="" />
+        <img class="img-fluid rounded" src="{{ postdiary.photo.url }}" width="300" height="300" alt="" />
       {% endif %}
       <hr />
       <!-- Post content-->
       <p class="lead">{{ postdiary.content | safe }}</p>
       <hr />
-      <!-- Comments form-->
+        <!-- Comments form-->
       <div class="card my-4">
-        <h5 class="card-header">Leave a Comment:</h5>
+        <h5 class="card-header">댓글:</h5>
         <div class="card-body">
-          <form>
-            <div class="form-group">
-              <textarea class="form-control" rows="3"></textarea>
-            </div>
-            <button class="btn btn-outline-primary" type="submit">Submit</button>
-          </form>
+          {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'diarys:create_comment' postdiary.pk %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="comment">댓글내용</label>
+                    <textarea class="form-control" name="content" id="content" rows="3">{{ form.content.value|default_if_none:'' }}</textarea>
+                </div>
+                <button class="btn btn-outline-primary" type="submit"><i class="far fa-comment-alt"></i> 등록</button>
+            </form>
+            {% else %}
+            <a role="button" class="btn btn-outline-danger btn-block btn-sm" href="{% url 'users:login' %}">로그인 후에 댓글을 등록 할 수 있습니다.</a>
+            {% endif %}
         </div>
       </div>
       <!-- Single comment-->
@@ -49,7 +55,7 @@
       <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50x50" alt="..." />
         <div class="media-body">
-          <span class="mt-0">{{ comment.user }}
+          <span class="mt-0">{{ comment.author.first_name }}
             <small class="text-muted"> | </small>
           {% if comment.updated_at %}
             <small class="text-muted">{{comment.updated_at}} 수정됨</small>
@@ -57,7 +63,7 @@
             <small class="text-muted">{{comment.created_at}}</small>
           {% endif %}
           </span><br />
-          {{ comment.comment }}
+          {{ comment.content }}
         </div>
       </div>
       {% endfor %}

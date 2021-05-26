@@ -47,3 +47,19 @@ class PostDiaryAdmin(SummernoteModelAdmin):
 #         return mark_safe(f'<img width="50px" src="{obj.file.url}" />')
 
 #     get_thumbnail.short_description = "Thumbnail"
+
+
+@admin.register(models.Comment)
+class CommentAdmin(admin.ModelAdmin):
+
+    """Comment Admin Definition"""
+
+    list_display = [
+        "author",
+        "diary",
+        "content",
+        "created_at",
+        "updated_at",
+    ]
+
+    list_filter = ("diary",)
