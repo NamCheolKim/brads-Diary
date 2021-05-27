@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 from core import models as core_models
 from users import models as user_models
 
@@ -8,15 +9,21 @@ class PostDiary(core_models.TimeStampModel):
 
     """PostDiary Model Definition"""
 
+    class Meta:
+        ordering = ["-created_at"]
+
     author = models.ForeignKey(
-        user_models.User, related_name="author_post", on_delete=models.CASCADE
+        user_models.User, related_name="postdiarys", on_delete=models.CASCADE
     )
     title = models.CharField(max_length=30)
     content = models.TextField()
-    photo = models.ImageField(upload_to="upload-img/%Y/%m/%d/", blank=True)
+    photo = models.ImageField(upload_to="upload-img/%Y/%m/%d/", null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("diarys:detail", kwargs={"pk": self.pk})
 
     # def head_photo(self):
     #     try:

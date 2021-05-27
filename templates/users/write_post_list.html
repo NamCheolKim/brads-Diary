@@ -1,0 +1,35 @@
+<div class="container">
+        <h3 class="text-center mt-3">{{user.first_name}}의 게시물</h3>
+        {% if user.postdiarys.count > 0 %}
+            <div class="row mt-3">
+                {% for diary in user.postdiarys.all %}        
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        {% if diary.photo %}
+                        <img class="bd-placeholder-img card-img-top" name="photo" width="100%" height="225"src="{{ diary.photo.url }}" alt="" />
+                        {% else %}
+                        <img src="/static/img/default-no-img.jpg" name="photo" width="100%" height="225" alt="no image">
+                        {% endif %}
+                        <div class="card-body">
+                            <p class="card-text">{{ diary.title }}</p> 
+                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{% url 'diarys:detail' diary.pk %}" class="btn btn-sm btn-outline-dark"><i class="fas fa-book-reader"></i> 자세히</a>
+                            </div>
+                            {% if diary.updated_at %}
+                            <small class="text-muted">{{ diary.updated_at }}</small>
+                            {% else %}
+                            <small class="text-muted">{{ diary.created_at }}</small>
+                            {% endif %}
+                            </div>
+                            <small class="text-muted float-right">{{ diary.author.first_name }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}     
+            </div>
+        {% else %}
+        <h3 class="text-center">등록한 게시물이 없습니다.</h3>
+        {% endif %}
+    </div>
+  

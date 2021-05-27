@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block page_title %}SignUp{% endblock page_title %}
 {% block content %}
     <form class="form-signin" method="POST" action="{% url 'users:signup' %}">
         {% csrf_token %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block page_title %}
+    {{user_obj.first_name}}'s Profile
+{% endblock page_title %}
+
+{% block content %}
+<div class="container">
+    {% if user_obj.avatar %}
+    <div class="container profile mb-3 rounded-circle" style="background-image: url({{user_obj.avatar.url}}); background-size: cover; background-position: 43% 57%;">
+    </div>
+    {% else %}
+    <div class="container profile mb-3 rounded-circle"><span>{{user_obj.first_name|first}}</span></div>
+    {% endif %}
+    <div class="text-center">
+        <div class="mb-3 font-weight-bold">
+            <span><i class="far fa-envelope"></i> 이메일: {{user_obj.email}}</span>
+        </div>
+        <div class="mb-3 font-weight-bold">
+            <span><i class="far fa-user"></i> 별명: {{user_obj.first_name}}</span>
+        </div>
+        <div class="mb-3 font-weight-bold">
+            <span><i class="fas fa-signature"></i> 이름: {{user_obj.last_name}}</span>
+        </div>
+    </div>
+    
+    {% if user == user_obj %}        
+    <div class="btn-edit mb-3">
+        <a href="{% url 'users:update-profile' %}" class="btn btn-outline-info">프로필 수정</a>
+    </div>
+    <div class="btn-edit mb-3">
+        <a href="{% url 'users:write-list' %}" class="btn btn-outline-success">내 게시물</a>
+    </div>
+    {% else %}
+    <div class="btn-edit mb-3">
+        <a href="{% url 'users:write-list' %}" class="btn btn-outline-success">{{user_obj.first_name}}의 게시물</a>
+    </div>
+    {% endif %}
+    
+    {% if object.login_method == "email" %}
+    <div class="btn-edit mb-3">
+        <a href="{% url 'users:update-password' %}" class="btn btn-outline-danger">비밀번호 변경</a>
+    </div> 
+    {% endif %}    
+</div>
+{% endblock %}
+    

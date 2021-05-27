@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block page_title %}{{ postdiary.title }}{% endblock page_title %}
 {% block content %}
 <!-- Page content-->
 <div class="container">
@@ -9,7 +10,26 @@
       <h1 class="mt-4">{{ postdiary.title }}</h1>
       <hr />
       <!-- Date and time-->
-      <span class="font-weight-bold">{{postdiary.author.first_name}}</span><small>({{postdiary.author}})</small> | 
+      {% if postdiary.author.avatar %}
+      <a href="{{postdiary.author.get_absolute_url}}" class="font-weight-bold">
+        <div class="profile-sm rounded-circle" style="background-image: url({{postdiary.author.avatar.url}}); background-size: cover; background-position: 43% 57%;">
+            <span style="visibility: hidden;">{{postdiary.author.first_name|first}}</span>
+        </div>
+        <!-- <img class="mr-1 rounded-circle" width="30" height="30" src="{{postdiary.author.avatar.url}}" alt="..."/> -->
+        {{postdiary.author.first_name}}
+      </a>
+      <small>({{postdiary.author}})</small>
+      {% else %}
+      <a href="{{postdiary.author.get_absolute_url}}" class="font-weight-bold">
+        <div class="profile-sm rounded-circle">
+          <span>{{postdiary.author.first_name|first}}</span>
+        </div>
+        {{postdiary.author.first_name}}
+      </a>
+      <small>({{postdiary.author}})</small>
+
+      {% endif %}
+      |   
       {% if postdiary.updated_at %}
       <small>{{ postdiary.updated_at }}에 수정됨</small>
       {% else %}
@@ -21,16 +41,17 @@
         <a href="{% url 'diarys:modify' postdiary.pk %}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-eraser"></i> 수정</a>
         <a href="{% url 'diarys:delete' postdiary.pk %}" class="delete btn btn-sm btn-outline-danger" onclick="return confirm('게시물을 삭제하시겠습니까?\n삭제한 게시물은 복구할 수 없습니다.')"><i class="fas fa-trash-alt"></i> 삭제</a>
       </div>
-      {% endif %}
       <br/> <br/>
-      <!-- Preview image-->
-  
-      {% if postdiary.photo %}
-        <img class="img-fluid rounded" src="{{ postdiary.photo.url }}" width="300" height="300" alt="" />
       {% endif %}
+      <!-- Preview image-->
+      {% if postdiary.photo %}
+      <img class="img-fluid rounded" src="{{ postdiary.photo.url }}" width="300" height="300" alt="" />
       <hr />
+      <p class="lead">{{ postdiary.content | safe }}</p>
+      {% else %}
       <!-- Post content-->
       <p class="lead">{{ postdiary.content | safe }}</p>
+      {% endif %}
       <hr />
         <!-- Comments form-->
       <div class="card my-4">
@@ -53,7 +74,14 @@
       <!-- Single comment-->
       {% for comment in postdiary.comments.all %}
       <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50x50" alt="..." />
+        {% if comment.author.avatar %}
+        <div class="profile-md mr-3 rounded-circle" style="background-image: url({{comment.author.avatar.url}}); background-size: cover; background-position: 43% 57%;">
+        </div>
+        {% else %}
+        <div class="profile-md mr-3 rounded-circle">
+          <span> {{comment.author.first_name|first}}</span>
+        </div>
+        {% endif %}  
         <div class="media-body">
           <span class="mt-0">{{ comment.author.first_name }}
             <small class="text-muted"> | </small>

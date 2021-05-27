@@ -1,11 +1,13 @@
 import os
 import requests
-from django.views.generic import FormView
+from django.contrib.auth.views import PasswordChangeView
+from django.views.generic import FormView, DetailView, TemplateView, UpdateView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.messages.views import SuccessMessageMixin
 from . import models, forms, mixins
 
 
@@ -180,3 +182,38 @@ def naver_callback(request):
     except NaverException as e:
         messages.error(request, e)
         return redirect(reverse("users:login"))
+
+
+class UserProfileView(DetailView):
+    model = models.User
+    context_object_name = "user_obj"
+
+
+class WritePostView(TemplateView):
+    template_name = "users/wirte_post_view.html"
+
+
+class UpdateProfileView(UpdateView):
+    model = models.User
+    template_name = "users/update-profile.html"
+    fields = ("first_name", "avatar")
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class UpdatePasswordView(mixins.EmailLoginOnlyView, mixins.LoggedInOnlyView, SuccessMessageMixin, PasswordChangeView):
+    template_name = "users/update-password.html"
+    success_message = "비밀번호가 변경 되었습니다."
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {"placeholder": "비밀번호"}
+        form.fields["new_password1"].widget.attrs = {"placeholder": "새로운 비밀번호"}
+        form.fields["new_password2"].widget.attrs = {
+            "placeholder": "새로운 비밀번호 확인"
+        }
+        return form
+    
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()

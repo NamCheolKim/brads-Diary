@@ -23,4 +23,5 @@ class CustomUserAdmin(UserAdmin):
         "last_name",
         "email",
         "login_method",
+        "avatar",
     )

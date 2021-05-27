@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_title %}Update Profile{% endblock page_title %}
+{% block content %}
+    <form class="form-update" method="POST" enctype="multipart/form-data" action="{% url 'users:update-profile' %}">
+        {% csrf_token %}
+        <!-- 오류 표시 -->
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for field in form %} 
+            {% if field.errors %}
+            <i class="fas fa-exclamation"></i> <strong>{{ field.label }}</strong>
+            {{ field.errors }} 
+            {% endif %} 
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- 오류 표시 -->
+        <div class="container profile-updete">
+            <h1 class="h3 mb-3 font-weight-normal text-center">프로필 수정 하시개</h1>
+            <label for="avatar" class="sr-only">프로필</label>
+            {{form.avatar}}
+            <label for="first_name" class="sr-only">별명</label>
+            <input type="text" id="first_name" name="first_name" class="form-control mt-3" value="{{ form.first_name.value | default_if_none:'' }}" placeholder="별명" required />
+            <div class="checkbox mb-3"> 
+                <!-- <label>
+                <input type="checkbox" value="remember-me" /> Remember me
+                </label> -->
+            </div>
+            <button class="btn btn-lg btn-outline-info btn-block" type="submit"><i class="far fa-save"></i> 프로필 수정</button>
+        </div>
+    </form>
+    {% endblock %}
