@@ -191,6 +191,7 @@ class UserProfileView(DetailView):
 
 class WritePostView(TemplateView):
     template_name = "users/wirte_post_view.html"
+    model = models.User
 
 
 class UpdateProfileView(UpdateView):
@@ -202,7 +203,12 @@ class UpdateProfileView(UpdateView):
         return self.request.user
 
 
-class UpdatePasswordView(mixins.EmailLoginOnlyView, mixins.LoggedInOnlyView, SuccessMessageMixin, PasswordChangeView):
+class UpdatePasswordView(
+    mixins.EmailLoginOnlyView,
+    mixins.LoggedInOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
     template_name = "users/update-password.html"
     success_message = "비밀번호가 변경 되었습니다."
 
@@ -210,10 +216,16 @@ class UpdatePasswordView(mixins.EmailLoginOnlyView, mixins.LoggedInOnlyView, Suc
         form = super().get_form(form_class=form_class)
         form.fields["old_password"].widget.attrs = {"placeholder": "비밀번호"}
         form.fields["new_password1"].widget.attrs = {"placeholder": "새로운 비밀번호"}
-        form.fields["new_password2"].widget.attrs = {
-            "placeholder": "새로운 비밀번호 확인"
-        }
+        form.fields["new_password2"].widget.attrs = {"placeholder": "새로운 비밀번호 확인"}
         return form
-    
+
     def get_success_url(self):
         return self.request.user.get_absolute_url()
+
+
+# def send_email(request):
+#     subject = "message"
+#     to = ["pkeowkd@naver.com"]
+#     from_email = "petsdiary0@gmail.com"
+#     message = "메시지 테스트"
+#     EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()

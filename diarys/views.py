@@ -61,7 +61,7 @@ def diary_modify(request, pk):
         form = forms.DiaryForm(request.POST, instance=diary)
         if form.is_valid():
             diary = form.save()
-            diary.photo = request.FILES["photo"]
+            diary.photo = request.FILES.get("photo", diary.photo)
             diary.author = request.user
             diary.updated_at = timezone.now()
             diary.save()

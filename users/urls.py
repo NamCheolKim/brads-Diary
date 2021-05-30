@@ -13,11 +13,12 @@ urlpatterns = [
     path("login/naver/callback/", views.naver_callback, name="naver-callback"),
     path("signup/", views.SignUpView.as_view(), name="signup"),
     path("profile/<int:pk>/", views.UserProfileView.as_view(), name="profile"),
-    path("write-list/", views.WritePostView.as_view(), name="write-list"),
+    path("write-list/<int:pk>", views.WritePostView.as_view(), name="write-list"),
     path("profile/update/", views.UpdateProfileView.as_view(), name="update-profile"),
     path(
         "profile/update-password/",
         views.UpdatePasswordView.as_view(),
         name="update-password",
     ),
+    # path("send_email/", views.send_email, name="send_email"),
 ]

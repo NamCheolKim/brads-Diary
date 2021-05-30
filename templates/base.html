@@ -36,5 +36,10 @@
       window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.slim.min.js' %}"><\/script>')
     </script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+   
+   {% block script %}
+     
+   {% endblock %}
+     
   </body>
 </html>

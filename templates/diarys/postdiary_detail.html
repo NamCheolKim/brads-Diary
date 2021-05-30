@@ -53,6 +53,7 @@
       <p class="lead">{{ postdiary.content | safe }}</p>
       {% endif %}
       <hr />
+      <a href="{% url 'diarys:list' %}" class="btn btn-outline-success">목록으로</a>
         <!-- Comments form-->
       <div class="card my-4">
         <h5 class="card-header">댓글:</h5>
