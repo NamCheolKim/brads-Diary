@@ -22,7 +22,7 @@ class User(AbstractUser):
     )
 
     def get_absolute_url(self):
-        return reverse("users:profile", kwargs={"pk": self.pk})
+        return reverse("profile", kwargs={"pk": self.pk})
 
     def get_absolute_url2(self):
-        return reverse("users:write-list", kwargs={"pk": self.pk})
+        return reverse("write-list", kwargs={"pk": self.pk})

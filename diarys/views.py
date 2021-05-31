@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404, resolve_url
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
@@ -25,7 +25,8 @@ class AlbumPostDetailView(DetailView):
 
 
 # 게시물 작성
-@login_required(login_url="users:login")
+# users
+@login_required(login_url="login")
 def diary_create(request):
     """Diary Create Definition"""
 
@@ -47,7 +48,8 @@ def diary_create(request):
 
 
 # 게시물 수정
-@login_required(login_url="core:login")
+# users
+@login_required(login_url="login")
 def diary_modify(request, pk):
     """Diary Modify Definition"""
 
@@ -74,7 +76,8 @@ def diary_modify(request, pk):
 
 
 # 게시물 삭제
-@login_required(login_url="core:login")
+# users
+@login_required(login_url="login")
 def diary_delete(request, pk):
     """Diary Delete Definition"""
 
@@ -89,7 +92,8 @@ def diary_delete(request, pk):
 
 
 # 댓글 작성
-@login_required(login_url="core:login")
+# users
+@login_required(login_url="login")
 def create_comment(request, pk):
     diary = get_object_or_404(models.PostDiary, pk=pk)
 
@@ -102,7 +106,9 @@ def create_comment(request, pk):
             comment.save()
 
             return redirect(
-                reverse("diarys:detail", kwargs={"pk": diary.pk}), comment.pk
+                "{}#comment_{}".format(
+                    resolve_url("diarys:detail", pk=diary.pk), comment.pk
+                )
             )
     else:
         form = forms.CreateCommentForm()

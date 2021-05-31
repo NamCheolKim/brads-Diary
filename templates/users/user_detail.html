@@ -28,11 +28,13 @@
         <a href="{{user_obj.get_absolute_url2}}" class="btn btn-outline-success">내 게시물</a>
     </div>
     <div class="btn-edit mb-3">
-        <a href="{% url 'users:update-profile' %}" class="btn btn-outline-info">프로필 수정</a>
+        <!--users:-->
+        <a href="{% url 'update-profile' %}" class="btn btn-outline-info">프로필 수정</a>
     </div>
     {% if object.login_method == "email" %}
     <div class="btn-edit mb-3">
-        <a href="{% url 'users:update-password' %}" class="btn btn-outline-danger">비밀번호 변경</a>
+        <!--users:-->
+        <a href="{% url 'update-password' %}" class="btn btn-outline-danger">비밀번호 변경</a>
     </div> 
     {% endif %}   
     {% else %}

@@ -1,7 +1,7 @@
 import os
 import requests
 from django.contrib.auth.views import PasswordChangeView
-from django.views.generic import FormView, DetailView, TemplateView, UpdateView
+from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.core.files.base import ContentFile
@@ -115,7 +115,8 @@ def kakao_callback(request):
         return redirect(reverse("diarys:list"))
     except KakaoException as e:
         messages.error(request, e)
-        return redirect(reverse("users:login"))
+        # users:
+        return redirect(reverse("login"))
 
 
 def naver_login(request):
@@ -181,7 +182,8 @@ def naver_callback(request):
         return redirect(reverse("diarys:list"))
     except NaverException as e:
         messages.error(request, e)
-        return redirect(reverse("users:login"))
+        # users:
+        return redirect(reverse("login"))
 
 
 class UserProfileView(DetailView):
@@ -189,7 +191,7 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class WritePostView(TemplateView):
+class WritePostView(DetailView):
     template_name = "users/wirte_post_view.html"
     model = models.User
 

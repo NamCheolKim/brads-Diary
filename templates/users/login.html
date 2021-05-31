@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block page_title %}LogIn{% endblock page_title %}
 {% block content %}
-    <form class="form-signin" method="POST" action="{% url 'users:login' %}">
+  <!--users:-->
+    <form class="form-signin" method="POST" action="{% url 'login' %}">
       {% csrf_token %}
       <!-- 오류 표시 -->
       {% if form.errors %}
@@ -34,8 +35,9 @@
       {% include 'social_login.html' %}
       <br/>
       <span>아직 회원이 아니냥...?</span>
-      <a href="{% url 'users:signup' %}" class="btn btn-lg btn-outline-info btn-block mb-2"><i class="fas fa-user-plus"></i> 회원가입</a>
+      <!--users:-->
+      <a href="{% url 'signup' %}" class="btn btn-lg btn-outline-info btn-block mb-2"><i class="fas fa-user-plus"></i> 회원가입</a>
       <span>비밀번호를 잊어버렸냥...?</span>
-      <a href="#" class="btn btn-lg btn-outline-danger btn-block"><i class="fas fa-key"></i> 비밀번호 찾기</a>
+      <a href="{% url 'password_reset' %}" class="btn btn-lg btn-outline-danger btn-block"><i class="fas fa-key"></i> 비밀번호 초기화</a>
     </form>
     {% endblock %}
