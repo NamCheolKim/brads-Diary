@@ -4,33 +4,56 @@
 <!--users:-->
     <form class="form-signin" method="POST" action="{% url 'signup' %}">
         {% csrf_token %}
-        <!-- 오류 표시 -->
-        {% if form.errors %}
-        <div class="alert alert-danger" role="alert">
-            {% for field in form %} 
-            {% if field.errors %}
-            <i class="fas fa-exclamation"></i> <strong>{{ field.label }}</strong>
-            {{ field.errors }} 
-            {% endif %} 
-            {% endfor %}
-        </div>
-        {% endif %}
-        <!-- 오류 표시 -->
         <h1 class="h3 mb-3 font-weight-normal text-center">회원가입 하시개</h1>
-        <label for="email" class="sr-only">이메일</label>
-        <input type="email" id="email" name="email" class="form-control" value="{{ form.email.value | default_if_none:'' }}" placeholder="이메일" required autofocus />
-        
-        <label for="password" class="sr-only">비밀번호</label>
-        <input type="password" id="password" name="password" class="form-control" value="{{ form.password.value | default_if_none:'' }}" placeholder="비밀번호" required />
-        
-        <label for="password1" class="sr-only">비밀번호 확인</label>
-        <input type="password" id="password1" name="password1" class="form-control" value="{{ form.password1.value | default_if_none:'' }}" placeholder="비밀번호 확인" required />
-        
-        <label for="last_name" class="sr-only">이름</label>
-        <input type="text" id="last_name" name="last_name" class="form-control" value="{{ form.last_name.value | default_if_none:'' }}" placeholder="이름" required />
-        
-        <label for="first_name" class="sr-only">별명</label>
-        <input type="text" id="first_name" name="first_name" class="form-control" value="{{ form.first_name.value | default_if_none:'' }}" placeholder="별명" required />
+
+        <label name="label_email" for="{{ form_email_for_label }}">{{ form.email.label }}</label><br/>
+        <small>사용중인 이메일을 입력해주세요. <br/>비밀번호를 잊어버린경우 필요합니다.</small>
+        {{ form.email }}
+
+        {% if form.email.errors %}
+        <script type="text/javascript">
+            document.getElementsByName('email')[0].setAttribute('class', 'form-control is-invalid')
+        </script>
+        {% for error in form.email.errors %}
+        <div class="invalid-feedback">
+            {{ error }}
+        </div>
+        {% endfor %}
+        {% endif %}
+      
+        <label name="label_first_name" for="{{ form_first_name_for_label }}">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+
+        {% if form.first_name.errors %}
+        <script type="text/javascript">
+            document.getElementsByName('first_name')[0].setAttribute('class', 'form-control is-invalid')
+        </script>
+        {% for error in form.first_name.errors %}
+        <div class="invalid-feedback">
+            {{ error }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <label name="label_last_name" for="{{ form_last_name_for_label }}">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+
+        <label name="label_password" for="{{ form_password_for_label }}">{{ form.password.label }}</label>
+            {{ form.password }}
+
+        <label name="label_password1" for="{{ form_password1for_label }}">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            
+        {% if form.password1.errors %}
+        <script type="text/javascript">
+            document.getElementsByName('password1')[0].setAttribute('class', 'form-control is-invalid')
+        </script>
+        {% for error in form.password1.errors %}
+        <div class="invalid-feedback">
+            {{ error }}
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="checkbox mb-3"> 
             <!-- <label>
             <input type="checkbox" value="remember-me" /> Remember me

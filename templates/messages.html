@@ -1,5 +1,5 @@
 {% if messages %}
-<div id="alert" class="container d-flex justify-content-center alert alert-info alert-dismissible fade show col-md-2" role="alert">
+<div id="alert" class="container d-flex justify-content-center alert alert-info alert-dismissible fade show col-md-5" role="alert">
     {% for message in messages %}
     <strong class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</strong>
     {% endfor %}
@@ -8,3 +8,4 @@
     </button>
 </div>
 {% endif %}
+

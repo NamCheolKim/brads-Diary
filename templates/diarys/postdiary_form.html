@@ -2,30 +2,28 @@
     <h5 class="my-3 border-bottom pb-2">CreateDiary</h5>
   <form method="POST" class="post-form my-3" enctype="multipart/form-data">
     {% csrf_token %}
-    <!-- 오류 표시 -->
-    {% if form.errors %}
-    <div class="alert alert-danger" role="alert">
-      {% for field in form %} 
-      {% if field.errors %}
-      <i class="fas fa-exclamation"></i> <strong>{{ field.label }}</strong>
-      {{ field.errors }} 
-      {% endif %} 
-      {% endfor %}
-    </div>
-    {% endif %}
-    <!-- 오류 표시 -->
-   
     <div class="form-group">
-      <label for="title">제목</label>
-      <input type="text" class="form-control" name="title" id="title" value="{{ form.title.value | default_if_none:'' }}"/>
+        <label name="label_title" for="{{ form_title_for_label }}">{{ form.title.label }}</label>
+        {{ form.title }}
     </div>
     <div class="form-group">
-      <label for="photo">썸네일</label><br/>
+      <label name="label_photo" for="{{ form_photo_for_label }}">{{ form.photo.label }}</label><br/>
       {{ form.photo }}
     </div>
     <div class="form-group">
-      <label for="content">내용</label>
+      <label name="label_content" for="{{ form_content_for_label }}">{{ form.content.label }}</label>
       {{ form.content }}
+      {% if form.content.errors %}
+      <script type="text/javascript">
+          document.getElementsByName('content')[0].setAttribute('class', 'form-control is-invalid')
+      </script>
+      {% for error in form.content.errors %}
+      <div class="invalid-feedback">
+          {{ error }}
+      </div>
+      {% endfor %}
+      {% endif %}
+
     </div>
     <button type="submit" class="btn btn-outline-success"><i class="fas fa-save"></i> 기록</button>
   </form>

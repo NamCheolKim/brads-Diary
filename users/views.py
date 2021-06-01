@@ -1,9 +1,11 @@
 import os
 import requests
 from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.hashers import check_password
 from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, render
+from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -216,13 +218,38 @@ class UpdatePasswordView(
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-        form.fields["old_password"].widget.attrs = {"placeholder": "비밀번호"}
-        form.fields["new_password1"].widget.attrs = {"placeholder": "새로운 비밀번호"}
-        form.fields["new_password2"].widget.attrs = {"placeholder": "새로운 비밀번호 확인"}
+        form.fields["old_password"].widget.attrs = {
+            "class": "form-control mb-3",
+            "placeholder": "비밀번호",
+        }
+        form.fields["new_password1"].widget.attrs = {
+            "class": "form-control mb-3",
+            "placeholder": "새로운 비밀번호",
+        }
+        form.fields["new_password2"].widget.attrs = {
+            "class": "form-control mb-3",
+            "placeholder": "새로운 비밀번호 확인",
+        }
         return form
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
+
+
+@login_required(login_url="login")
+def user_delete(request):
+    if request.method == "POST":
+        form = forms.CheckPasswordForm(request.user, request.POST)
+
+        if form.is_valid():
+            request.user.delete()
+            log_out(request)
+            return redirect(reverse("login"))
+    else:
+        form = forms.CheckPasswordForm(request.user)
+
+    context = {"form": form}
+    return render(request, "users/user_delete.html", context)
 
 
 # def send_email(request):

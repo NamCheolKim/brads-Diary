@@ -1,14 +1,18 @@
-    <!-- Comments form-->
-    <div class="card my-4">
-        <h5 class="card-header">댓글:</h5>
-        <div class="card-body">
-            <form method="POST" action="{% url 'comments:create' diary.pk %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="comment">댓글내용</label>
-                    <textarea class="form-control" name="comment" id="comment" rows="3">{{ form.comment.value|default_if_none:'' }}</textarea>
-                </div>
-                <button class="btn btn-outline-primary" type="submit"><i class="far fa-comment-alt"></i> 등록</button>
-            </form>
-        </div>
+ {% extends 'base.html' %}
+ {% block content %}     
+ <!-- Comments form-->
+ <div class="card my-4">
+    <h5 class="card-header">댓글수정:</h5>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="comment">댓글내용</label>
+                <textarea class="form-control" name="content" id="content" rows="3">{{ form.content.value|default_if_none:'' }}</textarea>
+            </div>
+            <button class="btn btn-outline-primary" type="submit"><i class="far fa-comment-alt"></i> 수정</button>
+        </form>
     </div>
+</div>
+ {% endblock %}
+     

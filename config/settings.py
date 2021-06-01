@@ -62,6 +62,7 @@ PROJECT_APPS = [
     "core.apps.CoreConfig",
     "diarys.apps.DiarysConfig",
     "users.apps.UsersConfig",
+    "boards.apps.BoardsConfig",
 ]
 
 MIDDLEWARE = [

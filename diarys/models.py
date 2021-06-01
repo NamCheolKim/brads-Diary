@@ -48,6 +48,7 @@ class PostDiary(core_models.TimeStampModel):
 #         return self.caption
 
 
+# 댓글
 class Comment(core_models.TimeStampModel):
 
     """Comment Model Definition"""

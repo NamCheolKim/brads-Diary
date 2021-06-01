@@ -1,11 +1,20 @@
+from django.contrib.auth.hashers import check_password
 from django import forms
 from . import models
 
 
 class LoginForm(forms.Form):
 
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.CharField(
+        widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "이메일"})
+    )
+    email.label = "이메일"
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "비밀번호"}
+        )
+    )
+    password.label = "비밀번호"
 
     def clean(self):
         email = self.cleaned_data.get("email")
@@ -23,23 +32,31 @@ class LoginForm(forms.Form):
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = (
-            "email",
-            "first_name",
-            "last_name",
-        )
+        fields = ("email", "first_name", "last_name")
         labels = {"email": "이메일", "last_name": "이름", "first_name": "별명"}
         widgets = {
-            "email": forms.EmailInput(attrs={"placeholder": "이메일"}),
-            "first_name": forms.TextInput(attrs={"placeholder": "별명"}),
-            "last_name": forms.TextInput(attrs={"placeholder": "이름"}),
+            "email": forms.EmailInput(
+                attrs={"class": "form-control", "placeholder": "이메일"}
+            ),
+            "first_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "별명"}
+            ),
+            "last_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "이름"}
+            ),
         }
 
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "비밀번호"}
+        )
     )
+    password.label = "비밀번호"
+
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호 확인"})
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "비밀번호 확인"}
+        )
     )
     password1.label = "비밀번호 확인"
 
@@ -74,3 +91,28 @@ class SignUpForm(forms.ModelForm):
         user.username = email
         user.set_password(password)
         user.save()
+
+
+class CheckPasswordForm(forms.Form):
+    password = forms.CharField(
+        label="비밀번호",
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "비밀번호",
+            }
+        ),
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = self.user.password
+
+        if password:
+            if not check_password(password, confirm_password):
+                self.add_error("password", "비밀번호가 일치하지 않습니다.")

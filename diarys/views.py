@@ -8,7 +8,6 @@ from . import models, forms
 
 # 게시물 리스트
 class AlbumPostView(ListView):
-    """AlbumView Definition"""
 
     model = models.PostDiary
     paginate_by = 12
@@ -19,7 +18,6 @@ class AlbumPostView(ListView):
 
 # 상세 페이지
 class AlbumPostDetailView(DetailView):
-    """AlbumDetailView Definition"""
 
     model = models.PostDiary
 
@@ -28,7 +26,6 @@ class AlbumPostDetailView(DetailView):
 # users
 @login_required(login_url="login")
 def diary_create(request):
-    """Diary Create Definition"""
 
     if request.method == "POST":
         form = forms.DiaryForm(request.POST)
@@ -51,7 +48,6 @@ def diary_create(request):
 # users
 @login_required(login_url="login")
 def diary_modify(request, pk):
-    """Diary Modify Definition"""
 
     diary = get_object_or_404(models.PostDiary, pk=pk)
 
@@ -91,14 +87,13 @@ def diary_delete(request, pk):
     return redirect(reverse("diarys:list"))
 
 
-# 댓글 작성
-# users
 @login_required(login_url="login")
 def create_comment(request, pk):
+
     diary = get_object_or_404(models.PostDiary, pk=pk)
 
     if request.method == "POST":
-        form = forms.CreateCommentForm(request.POST)
+        form = forms.CommentForm(request.POST)
         if form.is_valid():
             comment = form.save()
             comment.author = request.user
@@ -111,7 +106,53 @@ def create_comment(request, pk):
                 )
             )
     else:
-        form = forms.CreateCommentForm()
+        form = forms.CommentForm()
     context = {"form": form}
+    return render(request, "diarys/detail.html", context)
 
-    return render(request, "diarys/postdiary_detail.html", context)
+
+@login_required(login_url="login")
+def comment_modify(request, pk):
+
+    comment = get_object_or_404(models.Comment, pk=pk)
+
+    if request.user != comment.author:
+        messages.error(request, "수정권한이 없습니다.")
+        return redirect(reverse("diarys:detail", kwargs={"pk": comment.diary.pk}))
+
+    if request.method == "POST":
+        form = forms.CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            comment = form.save()
+            comment.author = request.user
+            comment.updated_at = timezone.now()
+            comment.save()
+
+            return redirect(
+                "{}#answer_{}".format(
+                    resolve_url("diarys:detail", pk=comment.diary.pk), comment.pk
+                )
+            )
+    else:
+        form = forms.CommentForm(instance=comment)
+
+    context = {"comment": comment, "form": form}
+
+    return render(request, "diarys/comment_form.html", context)
+
+
+@login_required(login_url="login")
+def comment_delete(request, pk):
+
+    comment = get_object_or_404(models.Comment, pk=pk)
+
+    if request.user != comment.author:
+        messages.error(request, "삭제권한이 없습니다.")
+    else:
+        comment.delete()
+
+    return redirect(
+        "{}#answer_{}".format(
+            resolve_url("diarys:detail", pk=comment.diary.pk), comment.pk
+        )
+    )

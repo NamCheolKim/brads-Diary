@@ -24,22 +24,23 @@
     </div>
     
     {% if user == user_obj %}        
-    <div class="btn-edit mb-3">
-        <a href="{{user_obj.get_absolute_url2}}" class="btn btn-outline-success">내 게시물</a>
+    <div class="container btn-edit mb-3">
+        <div>
+            <a href="{{user_obj.get_absolute_url2}}" class="btn btn-outline-success"><i class="fas fa-list"></i> 내 게시물</a>
+            <!--users:-->
+            <a href="{% url 'update-profile' %}" class="btn btn-outline-info"><i class="fas fa-cog"></i> 프로필 수정</a>
+        </div>
+        <div class="mt-2 ml-3">
+            <!--users:-->
+            {% if object.login_method == "email" %}
+            <a href="{% url 'update-password' %}" class="btn btn-outline-danger"><i class="fas fa-key"></i> 비밀번호 변경</a>
+            {% endif %}   
+            <a href="{% url 'user-delete' %}" class="btn btn-outline-danger"><i class="fas fa-sign-out-alt"></i> 회원 탈퇴</a>
+        </div>
     </div>
-    <div class="btn-edit mb-3">
-        <!--users:-->
-        <a href="{% url 'update-profile' %}" class="btn btn-outline-info">프로필 수정</a>
-    </div>
-    {% if object.login_method == "email" %}
-    <div class="btn-edit mb-3">
-        <!--users:-->
-        <a href="{% url 'update-password' %}" class="btn btn-outline-danger">비밀번호 변경</a>
-    </div> 
-    {% endif %}   
     {% else %}
     <div class="btn-edit mb-3">
-        <a href="{{user_obj.get_absolute_url2}}" class="btn btn-outline-success">{{user_obj.first_name}}의 게시물</a>
+        <a href="{{user_obj.get_absolute_url2}}" class="btn btn-outline-success"><i class="fas fa-list"></i> {{user_obj.first_name}}의 게시물</a>
     </div>
     {% endif %}
     
