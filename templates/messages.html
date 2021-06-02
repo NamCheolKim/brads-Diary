@@ -1,11 +1,20 @@
 {% if messages %}
-<div id="alert" class="container d-flex justify-content-center alert alert-info alert-dismissible fade show col-md-5" role="alert">
     {% for message in messages %}
-    <strong class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</strong>
+        <div id="alert" class="container d-flex justify-content-center alert {{ message.tags }} alert-auto-dismissible alert-dismissible notification-container text-center col-md-5" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>{{ message }}</strong>
+        </div>
     {% endfor %}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 {% endif %}
+
+<script type="text/javascript">
+    window.setTimeout(function(){
+        $(".alert").fadeTo(500,0).slideUp(500, function(){
+            $(this).remove()
+        });
+    }, 3000 );
+
+</script>
 

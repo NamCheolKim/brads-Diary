@@ -1,7 +1,6 @@
 import os
 import requests
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.hashers import check_password
 from django.views.generic import FormView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse, render
@@ -97,7 +96,7 @@ def kakao_callback(request):
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGIN_KAKAO:
-                raise KakaoException(f"Please log in with: {user.login_method}")
+                raise KakaoException(f"{user.login_method} 계정으로 로그인 해주세요.")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 email=email,
@@ -163,7 +162,7 @@ def naver_callback(request):
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGIN_NAVER:
-                raise NaverException(f"Please log in with: {user.login_method}")
+                raise NaverException(f"{user.login_method} 계정으로 로그인 해주세요.")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 email=email,
